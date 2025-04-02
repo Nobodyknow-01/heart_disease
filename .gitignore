@@ -1,0 +1,19 @@
+# Ignore virtual environment
+.venv/
+
+# Ignore compiled Python files
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore system-generated files
+.DS_Store
+Thumbs.db
+
+# Ignore log files and test reports
+logs/
+tests/test_report.txt
+
+# Ignore package-lock files (if using Node.js in frontend)
+node_modules/
+package-lock.json
