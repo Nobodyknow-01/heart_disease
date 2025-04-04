@@ -4,10 +4,7 @@ import { motion } from "framer-motion";
 import Confetti from "react-confetti";
 
 const HeartDiseaseForm = () => {
-  if (typeof window === "undefined") {
-    return null; // Prevents SSR issues
-  }
-
+  // ✅ Always define hooks at the top
   const [formData, setFormData] = useState({
     age: "",
     sex: "",
@@ -26,6 +23,11 @@ const HeartDiseaseForm = () => {
 
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
+
+  // ✅ SSR-safe early return using useEffect if needed
+  if (typeof window === "undefined") {
+    return <></>;
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -69,7 +71,21 @@ const HeartDiseaseForm = () => {
     }
   };
 
-  const parameterLabels = { /* Same as before */ };
+  const parameterLabels = {
+    age: "Age",
+    sex: "Sex (0 = Female, 1 = Male)",
+    cp: "Chest Pain Type (0-3)",
+    trestbps: "Resting Blood Pressure",
+    chol: "Serum Cholesterol",
+    fbs: "Fasting Blood Sugar > 120 mg/dl (1 = True; 0 = False)",
+    restecg: "Resting ECG (0-2)",
+    thalach: "Max Heart Rate",
+    exang: "Exercise-Induced Angina (1 = Yes; 0 = No)",
+    oldpeak: "ST Depression",
+    slope: "Slope of ST (0-2)",
+    ca: "Major Vessels (0-4)",
+    thal: "Thalassemia (1 = Normal; 2 = Fixed Defect; 3 = Reversible Defect)"
+  };
 
   return (
     <div className="heart-form-container">
@@ -94,7 +110,7 @@ const HeartDiseaseForm = () => {
           >
             <label>{parameterLabels[key]}</label>
             <input
-              type="text" // Changed from 'number' to 'text'
+              type="text"
               inputMode="numeric"
               pattern="[0-9]*"
               name={key}
