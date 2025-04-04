@@ -1,0 +1,132 @@
+/* Styling for the entire app */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: url('/public/heart-bg1.png') no-repeat center center fixed;
+  background-size: cover;
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Form container without outer box */
+.heart-form-container {
+  max-width: 1200px;
+  width: 90%;
+  background: transparent;
+  box-shadow: none;
+  padding: 40px;
+  transition: transform 0.3s ease;
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* Stylish heading */
+.stylish-heading {
+  font-size: 4rem;
+  font-weight: bold;
+  color: #ff4c4c;
+  text-align: center;
+  margin-bottom: 30px;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+  letter-spacing: 2px;
+}
+
+/* Form grid layout */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  justify-content: center;
+}
+
+.form-item {
+  background: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  transition: transform 0.3s;
+  text-align: center;
+}
+
+.form-item:hover {
+  transform: scale(1.05);
+}
+
+label {
+  display: block;
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+/* Fixed input area within parameter box */
+input {
+  width: calc(100% - 24px);
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  transition: border 0.3s;
+  font-size: 1rem;
+}
+
+input:hover {
+  border: 2px solid #ff4c4c;
+}
+
+/* Button container centered at the bottom */
+.button-container {
+  grid-column: span 3;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.submit-button {
+  background: #ff4c4c;
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background 0.3s;
+}
+
+.submit-button:hover {
+  background: #e04343;
+}
+
+/* Enlarged result text */
+.result-container {
+  text-align: center;
+  margin-top: 30px;
+  background: #f0f0f0;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.result-heading {
+  color: #4caf50;
+  font-size: 2.5rem;
+}
+
+.result-text {
+  font-size: 1.5rem;
+  color: #333;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
