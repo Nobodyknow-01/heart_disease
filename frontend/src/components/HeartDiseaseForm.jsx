@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import Confetti from "react-confetti";
 
 const HeartDiseaseForm = () => {
-  // ✅ Always define hooks at the top
   const [formData, setFormData] = useState({
     age: "",
     sex: "",
@@ -24,13 +23,17 @@ const HeartDiseaseForm = () => {
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
 
-  // ✅ SSR-safe early return using useEffect if needed
-  if (typeof window === "undefined") {
-    return <></>;
-  }
-
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    // ✅ Allow user to type freely, validate on submit
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+
     const validRanges = {
       age: [29, 77],
       sex: [0, 1],
@@ -47,17 +50,15 @@ const HeartDiseaseForm = () => {
       thal: [1, 3]
     };
 
-    const [min, max] = validRanges[name];
-    const numericValue = parseFloat(value);
-
-    if (value === "" || (numericValue >= min && numericValue <= max)) {
-      setFormData({ ...formData, [name]: value });
+    // ✅ Validate ranges before submission
+    for (const key in formData) {
+      const [min, max] = validRanges[key];
+      const value = parseFloat(formData[key]);
+      if (isNaN(value) || value < min || value > max) {
+        setError(`❌ ${key.toUpperCase()} must be between ${min} and ${max}.`);
+        return;
+      }
     }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
 
     try {
       const response = await axios.post("https://heart-disease-z6ru.onrender.com/predict", formData);
@@ -72,19 +73,19 @@ const HeartDiseaseForm = () => {
   };
 
   const parameterLabels = {
-    age: "Age",
-    sex: "Sex (0 = Female, 1 = Male)",
+    age: "Age (29-77 years)",
+    sex: "Sex (1 = Male, 0 = Female)",
     cp: "Chest Pain Type (0-3)",
-    trestbps: "Resting Blood Pressure",
-    chol: "Serum Cholesterol",
-    fbs: "Fasting Blood Sugar > 120 mg/dl (1 = True; 0 = False)",
-    restecg: "Resting ECG (0-2)",
-    thalach: "Max Heart Rate",
-    exang: "Exercise-Induced Angina (1 = Yes; 0 = No)",
-    oldpeak: "ST Depression",
-    slope: "Slope of ST (0-2)",
-    ca: "Major Vessels (0-4)",
-    thal: "Thalassemia (1 = Normal; 2 = Fixed Defect; 3 = Reversible Defect)"
+    trestbps: "Resting Blood Pressure (94-200 mmHg)",
+    chol: "Serum Cholesterol (126-564 mg/dl)",
+    fbs: "Fasting Blood Sugar (>120 mg/dl, 1 = True, 0 = False)",
+    restecg: "Resting ECG Results (0 = Normal, 1 = ST-T wave abnormality, 2 = Left ventricular hypertrophy)",
+    thalach: "Max Heart Rate (71-202 bpm)",
+    exang: "Exercise-Induced Angina (1 = Yes, 0 = No)",
+    oldpeak: "ST Depression (0.0-6.2)",
+    slope: "Slope of ST Segment (0 = Upsloping, 1 = Flat, 2 = Downsloping)",
+    ca: "Number of Major Vessels (0-4)",
+    thal: "Thalassemia (1 = Normal, 2 = Fixed defect, 3 = Reversible defect)"
   };
 
   return (
@@ -110,9 +111,7 @@ const HeartDiseaseForm = () => {
           >
             <label>{parameterLabels[key]}</label>
             <input
-              type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
+              type="number"
               name={key}
               value={formData[key]}
               onChange={handleChange}
@@ -150,6 +149,14 @@ const HeartDiseaseForm = () => {
           </motion.p>
         </motion.div>
       )}
+
+      <footer className="footer-section" style={{ background: '#f1f1f1', padding: '20px', borderRadius: '12px', boxShadow: '0 5px 15px rgba(0, 0, 0, 0.1)', marginTop: '30px' }}>
+        <h3>💡 Parameter Guide</h3>
+        <p><strong>CA (0-4):</strong> Number of major vessels colored by fluoroscopy.</p>
+        <p><strong>Thal (1-3):</strong> Thalassemia (1 = Normal, 2 = Fixed defect, 3 = Reversible defect).</p>
+        <p><strong>CP (0-3):</strong> Chest pain types: 0 = Typical angina, 1 = Atypical angina, 2 = Non-anginal pain, 3 = Asymptomatic.</p>
+        <p><strong>RestECG (0-2):</strong> Resting ECG results: 0 = Normal, 1 = ST-T wave abnormality, 2 = Left ventricular hypertrophy.</p>
+      </footer>
     </div>
   );
 };
