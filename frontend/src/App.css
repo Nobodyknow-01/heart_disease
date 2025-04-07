@@ -130,3 +130,56 @@ input:hover {
     transform: translateY(0);
   }
 }
+
+/* 🌐 MOBILE RESPONSIVE STYLES */
+@media (max-width: 768px) {
+  .heart-form-container {
+    padding: 20px;
+  }
+
+  .stylish-heading {
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .form-item {
+    padding: 16px;
+  }
+
+  label {
+    font-size: 1rem;
+    margin-bottom: 6px;
+  }
+
+  input {
+    font-size: 1rem;
+    padding: 10px;
+  }
+
+  .button-container {
+    grid-column: span 1;
+    margin-top: 15px;
+  }
+
+  .submit-button {
+    font-size: 1rem;
+    padding: 12px 24px;
+  }
+
+  .result-container {
+    padding: 20px;
+  }
+
+  .result-heading {
+    font-size: 2rem;
+  }
+
+  .result-text {
+    font-size: 1.2rem;
+  }
+}
