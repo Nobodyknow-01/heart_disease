@@ -25,8 +25,6 @@ const HeartDiseaseForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    // ✅ Allow user to type freely, validate on submit
     setFormData({ ...formData, [name]: value });
   };
 
@@ -50,12 +48,13 @@ const HeartDiseaseForm = () => {
       thal: [1, 3]
     };
 
-    // ✅ Validate ranges before submission
     for (const key in formData) {
       const [min, max] = validRanges[key];
       const value = parseFloat(formData[key]);
       if (isNaN(value) || value < min || value > max) {
         setError(`❌ ${key.toUpperCase()} must be between ${min} and ${max}.`);
+        setResult(null);
+        window.scrollTo({ top: 0, behavior: "smooth" });
         return;
       }
     }
@@ -64,11 +63,16 @@ const HeartDiseaseForm = () => {
       const response = await axios.post("https://heart-disease-z6ru.onrender.com/predict", formData);
       if (response.status === 200) {
         setResult(response.data);
+        setError("");
       } else {
         setError("❌ An unexpected error occurred.");
+        setResult(null);
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
     } catch (err) {
       setError("❌ Could not connect to server.");
+      setResult(null);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
@@ -132,7 +136,28 @@ const HeartDiseaseForm = () => {
         </div>
       </form>
 
-      {error && <p className="error">{error}</p>}
+      {error && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          style={{
+            color: "#fff",
+            backgroundColor: "#e74c3c",
+            padding: "15px 25px",
+            margin: "20px auto",
+            borderRadius: "10px",
+            fontWeight: "bold",
+            fontSize: "1.1rem",
+            textAlign: "center",
+            maxWidth: "500px",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.2)"
+          }}
+        >
+          ❌ {error}
+        </motion.div>
+      )}
+
       {result && (
         <motion.div
           className="result-container"
