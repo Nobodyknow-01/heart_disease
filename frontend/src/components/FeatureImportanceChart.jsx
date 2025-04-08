@@ -10,6 +10,7 @@ import {
 } from "recharts";
 
 
+
 const FeatureImportanceChart = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -18,7 +19,11 @@ const FeatureImportanceChart = () => {
     fetch("https://heart-disease-z6ru.onrender.com/feature-importance")
       .then((res) => res.json())
       .then((json) => {
-        setData(json.importance);
+        if (json.importance && Array.isArray(json.importance)) {
+          setData(json.importance);
+        } else {
+          console.error("Unexpected data:", json);
+        }
         setLoading(false);
       })
       .catch((err) => {
@@ -28,42 +33,30 @@ const FeatureImportanceChart = () => {
   }, []);
 
   return (
-    <div
-      style={{
-        marginTop: "2rem",
-        marginBottom: "2rem",
-        background: "rgba(255,255,255,0.9)",
-        padding: "1rem",
-        borderRadius: "12px",
-        boxShadow: "0 0 10px rgba(0,0,0,0.2)",
-        width: "90%",
-        maxWidth: "700px",
-        marginLeft: "auto",
-        marginRight: "auto",
-        animation: "fadeIn 0.8s ease-in-out",
-      }}
-    >
-      <h2 style={{ color: "#444", marginBottom: "1rem", textAlign: "center" }}>
+    <div className="chart-container" style={{ height: 350, paddingTop: 40 }}>
+      <h3 style={{ textAlign: "center", marginBottom: "1rem" }}>
         🔬 Feature Importance
-      </h2>
+      </h3>
       {loading ? (
         <div className="spinner-container">
           <div className="spinner"></div>
-          <p>Loading feature importance...</p>
+          Loading feature importance...
         </div>
-      ) : (
-        <ResponsiveContainer width="100%" height={300}>
+      ) : data.length > 0 ? (
+        <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} layout="vertical" margin={{ left: 80 }}>
             <XAxis type="number" />
             <YAxis type="category" dataKey="feature" />
             <Tooltip />
-            <Bar dataKey="importance">
+            <Bar dataKey="importance" fill="#8884d8">
               {data.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill="#69db7c" />
+                <Cell key={`cell-${index}`} fill="#ff6b6b" />
               ))}
             </Bar>
           </BarChart>
         </ResponsiveContainer>
+      ) : (
+        <p style={{ textAlign: "center" }}>No feature importance data found.</p>
       )}
     </div>
   );
