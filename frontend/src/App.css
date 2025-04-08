@@ -131,6 +131,37 @@ input:hover {
   }
 }
 
+/* Spinner styles */
+.spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 150px;
+  color: #555;
+  font-size: 1rem;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.spinner {
+  border: 6px solid #eee;
+  border-top: 6px solid #ff4c4c;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 /* 🌐 MOBILE RESPONSIVE STYLES */
 @media (max-width: 768px) {
   .heart-form-container {
