@@ -16,4 +16,4 @@ tests/test_report.txt
 
 # Ignore package-lock files (if using Node.js in frontend)
 node_modules/
-package-lock.json
+

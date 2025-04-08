@@ -18,7 +18,7 @@ app = FastAPI()
 # 🔥 Enable CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allows all origins
+    allow_origins=["*"],  # update with frontend domain in production
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -40,22 +40,25 @@ class HeartDiseaseInput(BaseModel):
     ca: int
     thal: int
 
+# 📊 Define feature names
+FEATURE_COLUMNS = [
+    'age', 'sex', 'cp', 'trestbps', 'chol', 'fbs',
+    'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal'
+]
+
 # 🚀 Prediction endpoint
 @app.post("/predict")
 def predict(input_data: HeartDiseaseInput):
     try:
-        # Convert input data to NumPy array
-        input_array = np.array([[  # ✅ Ensure proper input format
+        input_array = np.array([[
             input_data.age, input_data.sex, input_data.cp, input_data.trestbps,
             input_data.chol, input_data.fbs, input_data.restecg, input_data.thalach,
             input_data.exang, input_data.oldpeak, input_data.slope, input_data.ca, input_data.thal
         ]])
 
-        # ✅ Make prediction
         pred_prob = xgb_model.predict_proba(input_array)[0]
-
-        # 🔥 Improved label mapping logic for better accuracy
         threshold = 0.5
+
         if pred_prob[0] > threshold:
             label = "Positive (High Risk)"
             probability = float(pred_prob[0])
@@ -63,23 +66,28 @@ def predict(input_data: HeartDiseaseInput):
             label = "Negative (Low Risk)"
             probability = float(pred_prob[1])
 
-        # ✅ Return result
         return {
             "prediction": label,
             "probability": round(probability, 4)
         }
 
     except Exception as e:
-        # 🔥 Log the full traceback error
         print("🔥 Exception occurred:", traceback.format_exc())
-        
         return JSONResponse(
             status_code=500,
-            content={
-                "error": "Prediction failed",
-                "detail": str(e)
-            }
+            content={"error": "Prediction failed", "detail": str(e)}
         )
+
+# 📈 Feature importance endpoint
+@app.get("/feature-importance")
+def get_feature_importance():
+    importance = xgb_model.feature_importances_
+    return {
+        "importance": [
+            {"feature": feat, "importance": round(float(imp), 4)}
+            for feat, imp in zip(FEATURE_COLUMNS, importance)
+        ]
+    }
 
 # 🛠️ Test endpoint
 @app.get("/")
