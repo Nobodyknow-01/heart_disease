@@ -8,7 +8,7 @@ import {
   ResponsiveContainer,
   Cell,
 } from "recharts";
-import "./FeatureImportanceChart.css"; // for spinner styles
+
 
 const FeatureImportanceChart = () => {
   const [data, setData] = useState([]);
