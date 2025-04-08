@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  Cell,
+} from "recharts";
 
 const FeatureImportanceChart = () => {
   const [data, setData] = useState([]);
@@ -12,16 +20,18 @@ const FeatureImportanceChart = () => {
   }, []);
 
   return (
-    <div className="chart-container" style={{ height: 350 }}>
-      <h3>Feature Importance</h3>
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data} layout="vertical" margin={{ left: 80 }}>
+    <div className="max-w-3xl mx-auto mt-10 p-6 bg-white/80 rounded-2xl shadow-xl backdrop-blur-md">
+      <h2 className="text-xl font-bold mb-4 text-center text-gray-800">
+        🔬 Feature Importance
+      </h2>
+      <ResponsiveContainer width="100%" height={300}>
+        <BarChart data={data} layout="vertical" margin={{ left: 80, right: 20 }}>
           <XAxis type="number" />
-          <YAxis type="category" dataKey="feature" />
+          <YAxis dataKey="feature" type="category" />
           <Tooltip />
-          <Bar dataKey="importance" fill="#8884d8">
+          <Bar dataKey="importance">
             {data.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill="#69db7c" />
+              <Cell key={`cell-${index}`} fill="#ef4444" />
             ))}
           </Bar>
         </BarChart>
