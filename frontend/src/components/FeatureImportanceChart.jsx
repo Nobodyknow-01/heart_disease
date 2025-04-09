@@ -31,16 +31,16 @@ const FeatureImportanceChart = () => {
   }, []);
 
   return (
-        <div
+    <div
       className="chart-container"
       style={{
-        minHeight: "400px", // Increased height
-        padding: "2rem 1rem 1rem 1rem", // balanced padding (removed too much top space)
+        minHeight: "500px", // Increased height to fit all labels
+        padding: "2rem 1rem 1rem 1rem",
         background: "rgba(255,255,255,0.1)",
         backdropFilter: "blur(6px)",
         borderRadius: "1rem",
         boxShadow: "0 8px 20px rgba(0,0,0,0.2)",
-        overflow: "hidden", // Ensures chart doesn't overflow
+        overflow: "hidden",
       }}
     >
       <h3
@@ -62,10 +62,14 @@ const FeatureImportanceChart = () => {
           Loading feature importance...
         </div>
       ) : data.length > 0 ? (
-        <div style={{ height: "300px" }}>
-          {/* Fixed height for chart so it doesn’t overflow */}
+        <div style={{ height: `${data.length * 35}px`, width: "100%" }}>
+          {/* Dynamic height based on number of features */}
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={data} layout="vertical" margin={{ left: 80 }}>
+            <BarChart
+              data={data}
+              layout="vertical"
+              margin={{ top: 20, right: 30, left: 120, bottom: 10 }}
+            >
               <defs>
                 <linearGradient id="gradientRed" x1="0" y1="0" x2="1" y2="0">
                   <stop offset="0%" stopColor="#ff4c4c" />
@@ -74,7 +78,13 @@ const FeatureImportanceChart = () => {
               </defs>
 
               <XAxis type="number" stroke="#eee" />
-              <YAxis type="category" dataKey="feature" stroke="#eee" />
+              <YAxis
+                type="category"
+                dataKey="feature"
+                stroke="#eee"
+                width={100}
+                tick={{ fontSize: 14, fill: "#fff" }}
+              />
               <Tooltip
                 contentStyle={{
                   backgroundColor: "#222",
@@ -97,7 +107,6 @@ const FeatureImportanceChart = () => {
         </p>
       )}
     </div>
-
   );
 };
 
