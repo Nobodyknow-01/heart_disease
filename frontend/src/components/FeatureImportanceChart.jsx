@@ -1,64 +1,97 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   BarChart,
   Bar,
   XAxis,
   YAxis,
-  CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  LabelList,
-} from 'recharts';
-import axios from 'axios';
-import './App.css';
+  Cell,
+} from "recharts";
 
 const FeatureImportanceChart = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchImportance = async () => {
-      try {
-        const response = await axios.get('https://heartapi-ml.onrender.com/feature-importance');
-        if (response.data && response.data.importance) {
-          setData(response.data.importance);
+    fetch("https://heart-disease-z6ru.onrender.com/feature-importance")
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.importance && Array.isArray(json.importance)) {
+          setData(json.importance);
+        } else {
+          console.error("Unexpected data:", json);
         }
-      } catch (error) {
-        console.error('Error fetching feature importance:', error);
-      } finally {
         setLoading(false);
-      }
-    };
-
-    fetchImportance();
+      })
+      .catch((err) => {
+        console.error("Fetch error:", err);
+        setLoading(false);
+      });
   }, []);
 
   return (
-    <div className="feature-chart-container">
-      <h2 className="chart-title">🩺 Feature Importance</h2>
+    <div
+      className="chart-container"
+      style={{
+        height: 350,
+        paddingTop: 40,
+        background: "rgba(255,255,255,0.1)",
+        backdropFilter: "blur(6px)",
+        borderRadius: "1rem",
+        boxShadow: "0 8px 20px rgba(0,0,0,0.2)",
+      }}
+    >
+      <h3
+        style={{
+          textAlign: "center",
+          marginBottom: "1rem",
+          color: "#ff4c4c",
+          fontFamily: "Segoe UI, sans-serif",
+          fontWeight: "bold",
+          textShadow: "1px 1px 2px rgba(0,0,0,0.2)",
+        }}
+      >
+        ❤️ Feature Importance
+      </h3>
       {loading ? (
         <div className="spinner-container">
-          <div className="heart-loader"></div>
-          <div>Loading feature importance...</div>
+          <div className="spinner"></div>
+          Loading feature importance...
         </div>
-      ) : (
-        <ResponsiveContainer width="100%" height={400}>
-          <BarChart layout="vertical" data={data} margin={{ top: 5, right: 30, left: 80, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
-            <XAxis type="number" stroke="#555" />
-            <YAxis dataKey="feature" type="category" stroke="#555" />
-            <Tooltip />
-            <Bar dataKey="importance" fill="url(#heartGradient)" radius={[10, 10, 10, 10]}>
-              <LabelList dataKey="importance" position="right" />
+      ) : data.length > 0 ? (
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={data} layout="vertical" margin={{ left: 80 }}>
+            <XAxis type="number" stroke="#eee" />
+            <YAxis type="category" dataKey="feature" stroke="#eee" />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: "#222",
+                color: "#fff",
+                borderRadius: "8px",
+                border: "none",
+              }}
+            />
+            <Bar dataKey="importance">
+              {data.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill="url(#gradientRed)"
+                />
+              ))}
+              <defs>
+                <linearGradient id="gradientRed" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stopColor="#ff4c4c" />
+                  <stop offset="100%" stopColor="#ff7e7e" />
+                </linearGradient>
+              </defs>
             </Bar>
-            <defs>
-              <linearGradient id="heartGradient" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stopColor="#ff4d6d" />
-                <stop offset="100%" stopColor="#ff7b9c" />
-              </linearGradient>
-            </defs>
           </BarChart>
         </ResponsiveContainer>
+      ) : (
+        <p style={{ textAlign: "center", color: "#ccc" }}>
+          No feature importance data found.
+        </p>
       )}
     </div>
   );
