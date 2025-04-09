@@ -62,6 +62,14 @@ const FeatureImportanceChart = () => {
       ) : data.length > 0 ? (
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} layout="vertical" margin={{ left: 80 }}>
+            {/* Move defs here */}
+            <defs>
+              <linearGradient id="gradientRed" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stopColor="#ff4c4c" />
+                <stop offset="100%" stopColor="#ff7e7e" />
+              </linearGradient>
+            </defs>
+
             <XAxis type="number" stroke="#eee" />
             <YAxis type="category" dataKey="feature" stroke="#eee" />
             <Tooltip
@@ -74,17 +82,8 @@ const FeatureImportanceChart = () => {
             />
             <Bar dataKey="importance">
               {data.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill="url(#gradientRed)"
-                />
+                <Cell key={`cell-${index}`} fill="url(#gradientRed)" />
               ))}
-              <defs>
-                <linearGradient id="gradientRed" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stopColor="#ff4c4c" />
-                  <stop offset="100%" stopColor="#ff7e7e" />
-                </linearGradient>
-              </defs>
             </Bar>
           </BarChart>
         </ResponsiveContainer>
