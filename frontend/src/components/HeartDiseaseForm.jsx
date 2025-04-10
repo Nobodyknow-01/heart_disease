@@ -3,7 +3,8 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import Confetti from "react-confetti";
 
-const HeartDiseaseForm = ({ setPredictionProb }) => {
+const HeartDiseaseForm = ({ setPredictionProb, setUserInputData }) => {
+
   const [formData, setFormData] = useState({
     age: "",
     sex: "",
@@ -65,6 +66,7 @@ const HeartDiseaseForm = ({ setPredictionProb }) => {
       if (response.status === 200) {
         setResult(response.data);
         setPredictionProb(response.data.probability);
+        setUserInputData(formData);
         setError("");
       } else {
         setError("❌ An unexpected error occurred.");
