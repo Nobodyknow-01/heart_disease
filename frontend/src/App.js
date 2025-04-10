@@ -11,7 +11,13 @@ const App = () => {
   return (
     <div className="App">
       <HeartDiseaseForm setPredictionProb={setPredictionProb} />
-      {predictionProb !== null && <PredictionGauge probability={predictionProb} />}
+
+      {predictionProb !== null && (
+        <div style={{ marginTop: '2rem' }}>
+          <PredictionGauge probability={predictionProb} />
+        </div>
+      )}
+
       <FeatureImportanceChart />
     </div>
   );

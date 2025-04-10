@@ -3,7 +3,7 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import Confetti from "react-confetti";
 
-const HeartDiseaseForm = () => {
+const HeartDiseaseForm = ({ setPredictionProb }) => {
   const [formData, setFormData] = useState({
     age: "",
     sex: "",
@@ -54,6 +54,7 @@ const HeartDiseaseForm = () => {
       if (isNaN(value) || value < min || value > max) {
         setError(`❌ ${key.toUpperCase()} must be between ${min} and ${max}.`);
         setResult(null);
+        setPredictionProb(null);
         window.scrollTo({ top: 0, behavior: "smooth" });
         return;
       }
@@ -63,15 +64,18 @@ const HeartDiseaseForm = () => {
       const response = await axios.post("https://heart-disease-z6ru.onrender.com/predict", formData);
       if (response.status === 200) {
         setResult(response.data);
+        setPredictionProb(response.data.probability);
         setError("");
       } else {
         setError("❌ An unexpected error occurred.");
         setResult(null);
+        setPredictionProb(null);
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
     } catch (err) {
       setError("❌ Could not connect to server.");
       setResult(null);
+      setPredictionProb(null);
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
@@ -168,7 +172,7 @@ const HeartDiseaseForm = () => {
           {result.prediction === "No Disease" && <Confetti />}
           <h2>Prediction Result:</h2>
           <p className="large-prediction">Prediction: <strong>{result.prediction}</strong></p>
-          <p>Probability: <strong>{result.probability}</strong></p>
+          <p>Probability: <strong>{(result.probability * 100).toFixed(2)}%</strong></p>
           <motion.p className="consult-msg" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
             💡 If you have concerns, consult with a healthcare professional.
           </motion.p>
