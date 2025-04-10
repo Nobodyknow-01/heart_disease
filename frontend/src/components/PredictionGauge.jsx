@@ -10,7 +10,7 @@ const PredictionGauge = ({ prediction, probability }) => {
   // Determine risk level based on prediction (0 = healthy, 1 = disease)
   let riskLevel, riskColor, riskLabel;
 
-  if (prediction === 1) {
+  if (prediction === 0) {
     // Disease predicted
     riskLevel = percentage > 70 ? "High Risk" : percentage > 40 ? "Moderate Risk" : "Low Risk";
   } else {
