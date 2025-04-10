@@ -62,13 +62,16 @@ def predict(input_data: HeartDiseaseInput):
         if pred_prob[0] > threshold:
             label = "Positive (High Risk)"
             probability = float(pred_prob[0])
+            risk = "high"
         else:
             label = "Negative (Low Risk)"
             probability = float(pred_prob[1])
+            risk = "low"
 
         return {
             "prediction": label,
-            "probability": round(probability, 4)
+            "probability": round(probability, 4),
+            "risk": risk
         }
 
     except Exception as e:
