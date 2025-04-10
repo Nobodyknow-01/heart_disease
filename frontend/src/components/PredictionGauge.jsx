@@ -2,18 +2,28 @@ import React from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
-const PredictionGauge = ({ probability }) => {
-  if (probability === null || probability === undefined) return null;
+const PredictionGauge = ({ prediction, probability }) => {
+  if (probability === null || probability === undefined || prediction === null) return null;
 
   const percentage = Math.round(probability * 100);
 
-  const riskLevel =
-    percentage > 70 ? "High Risk" : percentage > 40 ? "Moderate Risk" : "Low Risk";
+  // Determine risk level based on prediction (0 = healthy, 1 = disease)
+  let riskLevel, riskColor, riskLabel;
 
-  const riskColor =
-    percentage > 70 ? "#fa5252" : percentage > 40 ? "#fab005" : "#40c057";
+  if (prediction === 1) {
+    // Disease predicted
+    riskLevel = percentage > 70 ? "High Risk" : percentage > 40 ? "Moderate Risk" : "Low Risk";
+  } else {
+    // Healthy predicted
+    riskLevel = percentage > 70 ? "Low Risk" : percentage > 40 ? "Moderate Risk" : "High Risk";
+  }
 
-  const riskLabel = {
+  riskColor =
+    riskLevel === "High Risk" ? "#fa5252" :
+    riskLevel === "Moderate Risk" ? "#fab005" :
+    "#40c057";
+
+  riskLabel = {
     "High Risk": "🚨 High Risk",
     "Moderate Risk": "⚠️ Moderate Risk",
     "Low Risk": "✅ Low Risk"
