@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import Confetti from "react-confetti";
 
 const HeartDiseaseForm = ({ setPredictionProb, setUserInputData, setRiskLevel }) => {
-
   const [formData, setFormData] = useState({
     age: "",
     sex: "",
@@ -68,7 +67,6 @@ const HeartDiseaseForm = ({ setPredictionProb, setUserInputData, setRiskLevel })
         setPredictionProb(response.data.probability);
         setUserInputData(formData);
         setRiskLevel(response.data.risk);
-
         setError("");
       } else {
         setError("❌ An unexpected error occurred.");
@@ -107,9 +105,15 @@ const HeartDiseaseForm = ({ setPredictionProb, setUserInputData, setRiskLevel })
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8 }}
         className="title center-title"
-        style={{ textAlign: 'center', fontSize: '3.5rem', color: '#fff' }}
+        style={{
+          textAlign: 'center',
+          fontSize: '3.5rem',
+          color: '#2c3e50',
+          fontWeight: '800',
+          marginBottom: '2rem'
+        }}
       >
-        ❤️ Heart Disease Prediction ❤️
+        ❤️ Heart Disease Prediction
       </motion.h1>
 
       <form onSubmit={handleSubmit} className="form-grid">
@@ -120,24 +124,52 @@ const HeartDiseaseForm = ({ setPredictionProb, setUserInputData, setRiskLevel })
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.5 }}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              background: '#f4f6f7',
+              padding: '1rem',
+              borderRadius: '12px',
+              boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+              marginBottom: '1rem'
+            }}
           >
-            <label>{parameterLabels[key]}</label>
+            <label style={{ fontWeight: '600', marginBottom: '0.5rem' }}>
+              {parameterLabels[key]}
+            </label>
             <input
               type="number"
               name={key}
               value={formData[key]}
               onChange={handleChange}
               required
+              style={{
+                padding: '10px',
+                borderRadius: '8px',
+                border: '1px solid #ccc',
+                fontSize: '1rem'
+              }}
             />
           </motion.div>
         ))}
 
-        <div className="button-container">
+        <div className="button-container" style={{ textAlign: "center", marginTop: "1.5rem" }}>
           <motion.button
             type="submit"
             className="submit-button"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
+            style={{
+              backgroundColor: "#00b894",
+              color: "#fff",
+              padding: "12px 28px",
+              fontSize: "1.2rem",
+              borderRadius: "10px",
+              border: "none",
+              cursor: "pointer",
+              fontWeight: "bold",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.1)"
+            }}
           >
             Predict
           </motion.button>
@@ -172,19 +204,48 @@ const HeartDiseaseForm = ({ setPredictionProb, setUserInputData, setRiskLevel })
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8 }}
+          style={{
+            backgroundColor: "#dff9fb",
+            padding: "2rem",
+            borderRadius: "12px",
+            marginTop: "2rem",
+            textAlign: "center",
+            boxShadow: "0 5px 15px rgba(0, 0, 0, 0.1)"
+          }}
         >
           {result.prediction === "No Disease" && <Confetti />}
-          <h2>Prediction Result:</h2>
-          <p className="large-prediction">Prediction: <strong>{result.prediction}</strong></p>
-          <p>Probability: <strong>{(result.probability * 100).toFixed(2)}%</strong></p>
-          <motion.p className="consult-msg" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
+          <h2 style={{ color: "#2c3e50" }}>Prediction Result:</h2>
+          <p className="large-prediction" style={{ fontSize: "1.5rem", margin: "0.5rem 0" }}>
+            Prediction: <strong>{result.prediction}</strong>
+          </p>
+          <p style={{ fontSize: "1.2rem" }}>
+            Probability: <strong>{(result.probability * 100).toFixed(2)}%</strong>
+          </p>
+          <motion.p
+            className="consult-msg"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            style={{ marginTop: "1rem", color: "#636e72" }}
+          >
             💡 If you have concerns, consult with a healthcare professional.
           </motion.p>
         </motion.div>
       )}
 
-      <footer className="footer-section" style={{ background: '#f1f1f1', padding: '20px', borderRadius: '12px', boxShadow: '0 5px 15px rgba(0, 0, 0, 0.1)', marginTop: '30px' }}>
-        <h3>💡 Parameter Guide</h3>
+      <footer
+        className="footer-section"
+        style={{
+          background: '#f1f1f1',
+          padding: '20px',
+          borderRadius: '12px',
+          boxShadow: '0 5px 15px rgba(0, 0, 0, 0.1)',
+          marginTop: '30px',
+          fontSize: '0.95rem',
+          color: '#2d3436'
+        }}
+      >
+        <h3 style={{ marginBottom: '1rem' }}>💡 Parameter Guide</h3>
         <p><strong>CA (0-4):</strong> Number of major vessels colored by fluoroscopy.</p>
         <p><strong>Thal (1-3):</strong> Thalassemia (1 = Normal, 2 = Fixed defect, 3 = Reversible defect).</p>
         <p><strong>CP (0-3):</strong> Chest pain types: 0 = Typical angina, 1 = Atypical angina, 2 = Non-anginal pain, 3 = Asymptomatic.</p>

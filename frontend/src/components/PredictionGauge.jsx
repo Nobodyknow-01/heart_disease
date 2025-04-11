@@ -8,7 +8,7 @@ const PredictionGauge = ({ probability, risk }) => {
   const percentage = Math.round(probability * 100);
 
   const riskColor = {
-    high: "#fa5252",
+    high: "#e74c3c",     // High Risk Circle
     moderate: "#fab005",
     low: "#40c057"
   }[risk];
@@ -26,16 +26,24 @@ const PredictionGauge = ({ probability, risk }) => {
         text={`${percentage}%`}
         styles={buildStyles({
           pathColor: riskColor,
-          textColor: "#333",
-          trailColor: "#eee",
+          textColor: "#2c3e50",        // Gauge Text
+          trailColor: "#b2bec3",       // Healthy Range Trail
           textSize: "18px",
           pathTransitionDuration: 0.75
         })}
       />
-      <p style={{ marginTop: 12, fontSize: "1.1rem", fontWeight: "bold", color: riskColor }}>
+      <p style={{
+        marginTop: 12,
+        fontSize: "1.1rem",
+        fontWeight: "bold",
+        color: riskColor
+      }}>
         {riskLabel}
       </p>
-      <p style={{ color: "#555", fontSize: "0.9rem" }}>
+      <p style={{
+        color: "#34495e",             // Tooltip Text
+        fontSize: "0.9rem"
+      }}>
         Confidence of Prediction
       </p>
     </div>
