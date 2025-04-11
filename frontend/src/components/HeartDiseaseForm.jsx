@@ -108,12 +108,12 @@ const HeartDiseaseForm = ({ setPredictionProb, setUserInputData, setRiskLevel })
         style={{
           textAlign: 'center',
           fontSize: '3.5rem',
-          color: '#2c3e50',
+          color: '#FFFFFF',
           fontWeight: '800',
           marginBottom: '2rem'
         }}
       >
-        ❤️ Heart Disease Prediction
+        ❤️ Heart Disease Prediction ❤️
       </motion.h1>
 
       <form onSubmit={handleSubmit} className="form-grid">
