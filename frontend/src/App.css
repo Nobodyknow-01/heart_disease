@@ -4,7 +4,7 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: url('/public/heart-bg1.png') no-repeat center center fixed;
   background-size: cover;
-  color: #333;
+  color: #2c3e50; /* Updated for high contrast */
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -26,7 +26,7 @@ body {
 .stylish-heading {
   font-size: 4rem;
   font-weight: bold;
-  color: #ff4c4c;
+  color: #e74c3c; /* High risk red */
   text-align: center;
   margin-bottom: 30px;
   text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
@@ -42,7 +42,7 @@ body {
 }
 
 .form-item {
-  background: #f9f9f9;
+  background: #f9f9f9; /* Card background */
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   padding: 20px;
@@ -57,7 +57,7 @@ body {
 label {
   display: block;
   font-size: 1.1rem;
-  color: #555;
+  color: #2c3e50; /* High contrast */
   margin-bottom: 10px;
   font-weight: bold;
 }
@@ -70,10 +70,11 @@ input {
   border-radius: 8px;
   transition: border 0.3s;
   font-size: 1rem;
+  color: #2c3e50; /* High contrast */
 }
 
 input:hover {
-  border: 2px solid #ff4c4c;
+  border: 2px solid #e74c3c; /* Match highlight color */
 }
 
 /* Button container centered at the bottom */
@@ -85,7 +86,7 @@ input:hover {
 }
 
 .submit-button {
-  background: #ff4c4c;
+  background: #e74c3c;
   color: white;
   border: none;
   padding: 15px 30px;
@@ -96,27 +97,27 @@ input:hover {
 }
 
 .submit-button:hover {
-  background: #e04343;
+  background: #c0392b;
 }
 
 /* Enlarged result text */
 .result-container {
   text-align: center;
   margin-top: 30px;
-  background: #f0f0f0;
+  background: #f9f9f9; /* Softer than white */
   border-radius: 12px;
   padding: 30px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .result-heading {
-  color: #4caf50;
+  color: #00b894; /* You (Bar Chart) teal */
   font-size: 2.5rem;
 }
 
 .result-text {
   font-size: 1.5rem;
-  color: #333;
+  color: #2c3e50; /* High contrast */
 }
 
 /* Animations */
@@ -138,14 +139,14 @@ input:hover {
   align-items: center;
   justify-content: center;
   height: 150px;
-  color: #555;
+  color: #34495e; /* Tooltip text / loading */
   font-size: 1rem;
   animation: fadeIn 0.5s ease-in-out;
 }
 
 .spinner {
   border: 6px solid #eee;
-  border-top: 6px solid #ff4c4c;
+  border-top: 6px solid #e74c3c;
   border-radius: 50%;
   width: 45px;
   height: 45px;
