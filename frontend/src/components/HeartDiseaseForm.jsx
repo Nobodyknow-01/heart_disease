@@ -82,47 +82,52 @@ const HeartDiseaseForm = ({ setPredictionProb, setUserInputData, setRiskLevel })
   };
 
   const parameterLabels = {
-    age: "Age (29-77)", sex: "Sex (1 = M, 0 = F)", cp: "Chest Pain Type (0-3)",
-    trestbps: "Resting BP (94-200)", chol: "Cholesterol (126-564)",
-    fbs: "Fasting Sugar (0 or 1)", restecg: "ECG (0-2)", thalach: "Max HR (71-202)",
-    exang: "Angina (0 or 1)", oldpeak: "ST Depression (0-6.2)",
-    slope: "ST Slope (0-2)", ca: "Vessels (0-4)", thal: "Thalassemia (1-3)"
+    age: "Age (29-77 years)", sex: "Sex (1 = Male, 0 = Female)", cp: "Chest Pain Type (0-3)",
+    trestbps: "Resting Blood Pressure (94-200 mmHg)", chol: "Serum Cholesterol (126-564 mg/dl)",
+    fbs: "Fasting Blood Sugar (>120 mg/dl, 1 = True, 0 = False)",
+    restecg: "Resting ECG Results (0 = Normal, 1 = ST-T wave abnormality, 2 = Left ventricular hypertrophy)",
+    thalach: "Max Heart Rate (71-202 bpm)", exang: "Exercise-Induced Angina (1 = Yes, 0 = No)",
+    oldpeak: "ST Depression (0.0-6.2)", slope: "Slope of ST Segment (0 = Upsloping, 1 = Flat, 2 = Downsloping)",
+    ca: "Number of Major Vessels (0-4)", thal: "Thalassemia (1 = Normal, 2 = Fixed defect, 3 = Reversible defect)"
   };
 
   return (
-    <div className="heart-form-container" style={{ padding: "1rem", maxWidth: "700px", margin: "auto" }}>
+    <div className="heart-form-container" style={{ padding: '1rem', maxWidth: '1200px', margin: '0 auto' }}>
       <motion.h1
-        initial={{ y: -40, opacity: 0 }}
+        initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: 0.8 }}
         className="title center-title"
         style={{
-          textAlign: 'center', fontSize: '2.5rem', color: '#FFFFFF',
-          fontWeight: '800', marginBottom: '1.5rem'
+          textAlign: 'center', fontSize: 'clamp(2rem, 6vw, 3.5rem)', color: '#FFFFFF',
+          fontWeight: '800', marginBottom: '2rem'
         }}
       >
         ❤️ Heart Disease Prediction ❤️
       </motion.h1>
 
-      <form onSubmit={handleSubmit} className="form-grid" style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr',
-        gap: '1rem'
-      }}>
+      <form onSubmit={handleSubmit}
+        className="form-grid"
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+          gap: '1rem'
+        }}
+      >
         {Object.keys(formData).map((key) => (
           <motion.div
             key={key}
             className="form-item"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5 }}
             style={{
               display: 'flex', flexDirection: 'column', background: '#f4f6f7',
               padding: '1rem', borderRadius: '12px',
-              boxShadow: '0 1px 6px rgba(0,0,0,0.08)'
+              boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
             }}
           >
-            <label style={{ fontWeight: '600', marginBottom: '0.4rem', fontSize: '0.95rem' }}>
+            <label style={{ fontWeight: '600', marginBottom: '0.5rem', fontSize: 'clamp(0.9rem, 2vw, 1.1rem)' }}>
               {parameterLabels[key]}
             </label>
             <input
@@ -139,15 +144,15 @@ const HeartDiseaseForm = ({ setPredictionProb, setUserInputData, setRiskLevel })
           </motion.div>
         ))}
 
-        <div style={{ textAlign: "center" }}>
+        <div className="button-container" style={{ textAlign: "center", marginTop: "1.5rem", gridColumn: '1 / -1' }}>
           <motion.button
             type="submit"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            className="submit-button"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
             style={{
-              backgroundColor: "#00b894", color: "#fff",
-              padding: "12px 28px", fontSize: "1.1rem",
-              borderRadius: "10px", border: "none",
+              backgroundColor: "#00b894", color: "#fff", padding: "12px 28px",
+              fontSize: "1.1rem", borderRadius: "10px", border: "none",
               cursor: "pointer", fontWeight: "bold",
               width: "100%", maxWidth: "300px"
             }}
@@ -163,32 +168,32 @@ const HeartDiseaseForm = ({ setPredictionProb, setUserInputData, setRiskLevel })
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
           style={{
-            color: "#fff", backgroundColor: "#e74c3c", padding: "1rem",
-            marginTop: "1.5rem", borderRadius: "10px", fontWeight: "bold",
-            fontSize: "1rem", textAlign: "center"
+            color: "#fff", backgroundColor: "#e74c3c", padding: "15px 25px",
+            margin: "20px auto", borderRadius: "10px", fontWeight: "bold",
+            fontSize: "1.1rem", textAlign: "center", maxWidth: "500px"
           }}
         >
-          {error}
+          ❌ {error}
         </motion.div>
       )}
 
       {result && (
         <motion.div
           className="result-container"
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8 }}
           style={{
-            backgroundColor: "#dff9fb", padding: "1.5rem",
+            backgroundColor: "#dff9fb", padding: "2rem",
             borderRadius: "12px", marginTop: "2rem", textAlign: "center"
           }}
         >
           {result.prediction === "No Disease" && <Confetti />}
-          <h2 style={{ color: "#2c3e50", fontSize: "1.5rem" }}>Prediction Result:</h2>
-          <p style={{ fontSize: "1.2rem" }}>
-            <strong>{result.prediction}</strong>
+          <h2 style={{ color: "#2c3e50" }}>Prediction Result:</h2>
+          <p className="large-prediction" style={{ fontSize: "1.5rem", margin: "0.5rem 0" }}>
+            Prediction: <strong>{result.prediction}</strong>
           </p>
-          <p style={{ fontSize: "1rem" }}>
+          <p style={{ fontSize: "1.2rem" }}>
             Probability: <strong>{(result.probability * 100).toFixed(2)}%</strong>
           </p>
 
@@ -196,9 +201,10 @@ const HeartDiseaseForm = ({ setPredictionProb, setUserInputData, setRiskLevel })
             onClick={handleExportPDF}
             whileHover={{ scale: 1.05 }}
             style={{
-              marginTop: "1.2rem", padding: "10px 22px", fontSize: "1rem",
-              backgroundColor: "#0984e3", color: "#fff", border: "none",
-              borderRadius: "8px", cursor: "pointer", fontWeight: "bold"
+              marginTop: "1.5rem", padding: "10px 22px", fontSize: "1rem",
+              backgroundColor: "#0984e3", color: "#fff",
+              border: "none", borderRadius: "8px", cursor: "pointer",
+              fontWeight: "bold"
             }}
           >
             📄 Export as PDF
@@ -209,23 +215,26 @@ const HeartDiseaseForm = ({ setPredictionProb, setUserInputData, setRiskLevel })
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
-            style={{ marginTop: "1rem", color: "#636e72", fontSize: "0.95rem" }}
+            style={{ marginTop: "1rem", color: "#636e72" }}
           >
-            💡 Consult a doctor if you have concerns.
+            💡 If you have concerns, consult with a healthcare professional.
           </motion.p>
         </motion.div>
       )}
 
-      <footer style={{
-        background: '#f1f1f1', padding: '1rem',
-        borderRadius: '12px', marginTop: '2rem',
-        fontSize: '0.9rem', color: '#2d3436'
-      }}>
-        <h3 style={{ marginBottom: '0.8rem' }}>💡 Parameter Guide</h3>
-        <p><strong>CA (0-4):</strong> Major vessels colored by fluoroscopy.</p>
-        <p><strong>Thal (1-3):</strong> 1 = Normal, 2 = Fixed, 3 = Reversible defect.</p>
-        <p><strong>CP (0-3):</strong> 0 = Typical angina, 3 = Asymptomatic.</p>
-        <p><strong>RestECG (0-2):</strong> 0 = Normal, 2 = LV hypertrophy.</p>
+      <footer
+        className="footer-section"
+        style={{
+          background: '#f1f1f1', padding: '20px',
+          borderRadius: '12px', marginTop: '30px',
+          fontSize: '0.95rem', color: '#2d3436'
+        }}
+      >
+        <h3 style={{ marginBottom: '1rem' }}>💡 Parameter Guide</h3>
+        <p><strong>CA (0-4):</strong> Number of major vessels colored by fluoroscopy.</p>
+        <p><strong>Thal (1-3):</strong> Thalassemia (1 = Normal, 2 = Fixed defect, 3 = Reversible defect).</p>
+        <p><strong>CP (0-3):</strong> Chest pain types: 0 = Typical angina, 1 = Atypical angina, 2 = Non-anginal pain, 3 = Asymptomatic.</p>
+        <p><strong>RestECG (0-2):</strong> Resting ECG results: 0 = Normal, 1 = ST-T wave abnormality, 2 = Left ventricular hypertrophy.</p>
       </footer>
     </div>
   );
