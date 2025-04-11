@@ -30,7 +30,7 @@ const CompareChart = ({ userData }) => {
       <h3
         style={{
           textAlign: "center",
-          color: "#2c3e50",
+          color: "#FFFFFF",
           fontSize: "1.5rem",
           marginBottom: "1.2rem",
         }}
@@ -73,7 +73,7 @@ const CompareChart = ({ userData }) => {
           />
           <Bar
             dataKey="User"
-            fill="#00cec9"
+            fill="#6c5ce7"
             name="You"
             barSize={18}
             radius={[8, 8, 8, 8]}
@@ -82,7 +82,7 @@ const CompareChart = ({ userData }) => {
           </Bar>
           <Bar
             dataKey="Healthy"
-            fill="#636e72"
+            fill="#74b9ff"
             name="Healthy Range"
             barSize={18}
             radius={[8, 8, 8, 8]}
